@@ -38,6 +38,7 @@ export const categories = [
 ];
 
 export const dietaryFilters = [
+  "Vegetarian",
   "Vegan",
   "Gluten Free",
   "Diabetic Friendly",
@@ -61,18 +62,18 @@ export const healthOptions = [
 ];
 
 export const foodItems: FoodItem[] = [
-  { id: "f1", name: "Garden Fresh Salad", description: "Crisp greens with cherry tomatoes, cucumber, and lemon vinaigrette", price: 8.99, category: "Appetizers", tags: ["Vegan", "Gluten Free", "Low Calorie"], emoji: "🥗" },
-  { id: "f2", name: "Stuffed Mushrooms", description: "Button mushrooms filled with herbs, garlic, and breadcrumbs", price: 10.99, category: "Appetizers", tags: ["Vegetarian"], emoji: "🍄" },
-  { id: "f3", name: "Hummus Platter", description: "Creamy chickpea hummus with fresh pita and veggie sticks", price: 9.49, category: "Appetizers", tags: ["Vegan", "Lactose Free"], emoji: "🫘" },
-  { id: "f4", name: "Grilled Chicken Breast", description: "Herb-marinated chicken breast with steamed vegetables", price: 16.99, category: "Main Course", tags: ["Gluten Free", "High Protein"], emoji: "🍗" },
-  { id: "f5", name: "Veggie Stir Fry", description: "Seasonal vegetables wok-tossed with ginger-soy sauce", price: 13.99, category: "Main Course", tags: ["Vegan", "Low Calorie"], emoji: "🥘" },
-  { id: "f6", name: "Salmon Teriyaki", description: "Pan-seared salmon fillet with teriyaki glaze and rice", price: 19.99, category: "Main Course", tags: ["Gluten Free", "High Protein"], emoji: "🐟" },
-  { id: "f7", name: "Quinoa Power Bowl", description: "Quinoa with avocado, black beans, corn, and cilantro lime dressing", price: 14.49, category: "Healthy Bowls", tags: ["Vegan", "Gluten Free", "Diabetic Friendly"], emoji: "🥑" },
-  { id: "f8", name: "Mediterranean Bowl", description: "Falafel, tabbouleh, pickled onions, and tahini sauce", price: 13.99, category: "Healthy Bowls", tags: ["Vegan", "Lactose Free"], emoji: "🧆" },
-  { id: "f9", name: "Mango Coconut Panna Cotta", description: "Silky coconut panna cotta topped with fresh mango coulis", price: 7.99, category: "Desserts", tags: ["Gluten Free", "Lactose Free"], emoji: "🍮" },
-  { id: "f10", name: "Dark Chocolate Mousse", description: "Rich vegan chocolate mousse with cocoa nibs", price: 8.49, category: "Desserts", tags: ["Vegan", "Gluten Free"], emoji: "🍫" },
-  { id: "f11", name: "Green Detox Smoothie", description: "Spinach, banana, ginger, and coconut water", price: 6.99, category: "Beverages", tags: ["Vegan", "Gluten Free", "Diabetic Friendly", "Low Calorie"], emoji: "🥤" },
-  { id: "f12", name: "Turmeric Latte", description: "Warm oat milk with turmeric, cinnamon, and honey", price: 5.49, category: "Beverages", tags: ["Lactose Free"], emoji: "☕" },
+  { id: "f1", name: "Samosa Chaat", description: "Crispy samosas crushed and topped with yogurt, chutneys, and spices", price: 8.99, category: "Appetizers", tags: ["Vegetarian"], emoji: "🥔" },
+  { id: "f2", name: "Paneer Tikka", description: "Cubes of paneer marinated in yogurt and spices, grilled to perfection", price: 10.99, category: "Appetizers", tags: ["Vegetarian", "Gluten Free", "High Protein"], emoji: "🧀" },
+  { id: "f3", name: "Hara Bhara Kabab", description: "Healthy patties made of spinach, peas, and potatoes", price: 9.49, category: "Appetizers", tags: ["Vegan", "Lactose Free", "Low Calorie"], emoji: "🌱" },
+  { id: "f4", name: "Butter Chicken", description: "Tender chicken cooked in a rich and creamy tomato sauce", price: 16.99, category: "Main Course", tags: ["Gluten Free", "High Protein"], emoji: "🍗" },
+  { id: "f5", name: "Palak Paneer", description: "Cottage cheese cubes cooked in a smooth spinach gravy", price: 13.99, category: "Main Course", tags: ["Vegetarian", "Gluten Free"], emoji: "🥬" },
+  { id: "f6", name: "Dal Makhani", description: "Slow-cooked black lentils and kidney beans with butter and cream", price: 14.99, category: "Main Course", tags: ["Vegetarian", "Gluten Free"], emoji: "🥣" },
+  { id: "f7", name: "Quinoa Khichdi", description: "Nutritious blend of quinoa, lentils, and fresh vegetables", price: 14.49, category: "Healthy Bowls", tags: ["Vegan", "Gluten Free", "Diabetic Friendly", "Low Calorie"], emoji: "🥗" },
+  { id: "f8", name: "Millet Bisi Bele Bath", description: "Spicy and tangy traditional dish made with healthy millets and lentils", price: 13.99, category: "Healthy Bowls", tags: ["Vegetarian", "Gluten Free", "High Protein"], emoji: "🍛" },
+  { id: "f9", name: "Rasmalai", description: "Soft cottage cheese dumplings soaked in sweetened, thickened milk", price: 7.99, category: "Desserts", tags: ["Vegetarian", "Gluten Free"], emoji: "🍨" },
+  { id: "f10", name: "Gajar Ka Halwa", description: "Classic dessert made with grated carrots, milk, sugar, and nuts", price: 8.49, category: "Desserts", tags: ["Vegetarian", "Gluten Free"], emoji: "🥕" },
+  { id: "f11", name: "Mango Lassi", description: "Refreshing yogurt-based drink sweetened with mango pulp", price: 6.99, category: "Beverages", tags: ["Vegetarian", "Gluten Free"], emoji: "🥭" },
+  { id: "f12", name: "Masala Chai", description: "Traditional Indian tea brewed with aromatic spices and herbs", price: 5.49, category: "Beverages", tags: ["Vegetarian", "Gluten Free"], emoji: "☕" },
 ];
 
 export const utensils: UtensilItem[] = [
@@ -87,6 +88,6 @@ export const utensils: UtensilItem[] = [
 export const cooks: CookProfile[] = [
   { id: "c1", name: "Chef Arjun Mehta", specialty: "North Indian & Mughlai Cuisine", hourlyRate: 35, fullDayRate: 220, rating: 4.9, available: true, emoji: "👨‍🍳" },
   { id: "c2", name: "Chef Priya Sharma", specialty: "South Indian & Healthy Cuisine", hourlyRate: 30, fullDayRate: 190, rating: 4.8, available: true, emoji: "👩‍🍳" },
-  { id: "c3", name: "Chef Marco Rossi", specialty: "Italian & Mediterranean", hourlyRate: 40, fullDayRate: 260, rating: 4.7, available: false, emoji: "👨‍🍳" },
-  { id: "c4", name: "Chef Yuki Tanaka", specialty: "Japanese & Asian Fusion", hourlyRate: 38, fullDayRate: 240, rating: 4.9, available: true, emoji: "👩‍🍳" },
+  { id: "c3", name: "Chef Vikas Khanna", specialty: "Modern Indian & Fusion Cuisine", hourlyRate: 40, fullDayRate: 260, rating: 4.7, available: false, emoji: "👨‍🍳" },
+  { id: "c4", name: "Chef Garima Arora", specialty: "Traditional Indian & Street Food", hourlyRate: 38, fullDayRate: 240, rating: 4.9, available: true, emoji: "👩‍🍳" },
 ];
