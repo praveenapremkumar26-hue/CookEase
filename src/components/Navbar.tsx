@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, Menu, X, Leaf, Package, ClipboardList } from "lucide-react";
+import { ShoppingCart, Menu, X, Leaf, Package, ClipboardList, LogOut, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ const navLinks = [
 
 export default function Navbar() {
   const { totalItems } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -65,6 +67,29 @@ export default function Navbar() {
               <ClipboardList className="h-5 w-5" />
             </Button>
           </Link>
+
+          <div className="hidden md:flex items-center ml-2 border-l pl-4">
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium flex items-center gap-2">
+                  <User className="h-4 w-4" /> {user.name}
+                </span>
+                <Button variant="ghost" size="sm" onClick={logout} className="gap-2">
+                  <LogOut className="h-4 w-4" /> Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link to="/login">
+                  <Button variant="ghost" size="sm">Login</Button>
+                </Link>
+                <Link to="/register">
+                  <Button size="sm">Sign Up</Button>
+                </Link>
+              </div>
+            )}
+          </div>
+
           <Button
             variant="ghost"
             size="icon"
@@ -94,6 +119,28 @@ export default function Navbar() {
               {link.label}
             </Link>
           ))}
+
+          <div className="pt-4 pb-2 border-t mt-2">
+            {isAuthenticated && user ? (
+              <div className="flex flex-col gap-3">
+                <span className="px-4 text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <User className="h-4 w-4" /> Signed in as {user.name}
+                </span>
+                <Button variant="ghost" className="justify-start px-4 w-full text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => { logout(); setMobileOpen(false); }}>
+                  <LogOut className="h-4 w-4 mr-2" /> Logout
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2 px-2">
+                <Link to="/login" onClick={() => setMobileOpen(false)}>
+                  <Button variant="outline" className="w-full">Login</Button>
+                </Link>
+                <Link to="/register" onClick={() => setMobileOpen(false)}>
+                  <Button className="w-full">Sign Up</Button>
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       )}
     </header>
