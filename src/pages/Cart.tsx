@@ -4,13 +4,20 @@ import { Badge } from "@/components/ui/badge";
 import { Trash2, Minus, Plus, ShoppingBag, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useState } from "react";
 
 export default function Cart() {
   const { items, removeItem, updateQuantity, clearCart, totalPrice } = useCart();
+  const [isPaying, setIsPaying] = useState(false);
 
-  const handleCheckout = () => {
-    toast.success("Order placed successfully! (Simulated)", {
-      description: `Total: $${totalPrice.toFixed(2)}. Backend integration needed for real payments.`,
+  // Simulated payment gateway handler
+  const handlePayment = async () => {
+    setIsPaying(true);
+    // TODO: Replace this with real payment gateway integration (e.g., Stripe, Razorpay)
+    await new Promise((res) => setTimeout(res, 2000)); // Simulate payment delay
+    setIsPaying(false);
+    toast.success("Payment successful! Order placed.", {
+      description: `Total: $${totalPrice.toFixed(2)}. Replace with real payment confirmation.`,
     });
     clearCart();
   };
@@ -103,11 +110,13 @@ export default function Cart() {
           <span>Total</span>
           <span className="text-primary">${totalPrice.toFixed(2)}</span>
         </div>
-        <Button className="w-full gap-2" size="lg" onClick={handleCheckout}>
-          Proceed to Checkout <ArrowRight className="h-4 w-4" />
-        </Button>
+        <Link to="/payment">
+          <Button className="w-full gap-2" size="lg">
+            Proceed to Payment <ArrowRight className="h-4 w-4" />
+          </Button>
+        </Link>
         <p className="text-xs text-center text-muted-foreground">
-          Payment simulation — connect a backend for real transactions.
+          Choose your payment method on the next page.
         </p>
       </div>
     </main>
