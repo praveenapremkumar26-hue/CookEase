@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { cooks } from "@/data/menuData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,24 +10,29 @@ import { Star, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export default function CookHiring() {
-  const { addItem } = useCart();
+  const { startContract } = useCart();
   const [hours, setHours] = useState<Record<string, number>>({});
+  const navigate = useNavigate();
 
   const handleHire = (cook: typeof cooks[0]) => {
     const h = hours[cook.id] || 1;
     const isFullDay = h >= 8;
     const price = isFullDay ? cook.fullDayRate * Math.ceil(h / 8) : cook.hourlyRate * h;
-    addItem({
-      id: cook.id,
-      cartId: `${cook.id}-${Date.now()}`,
-      type: "cook",
-      name: cook.name,
-      price,
-      quantity: 1,
+
+    startContract({
+      id: `${cook.id}-${Date.now()}`,
+      cookId: cook.id,
+      cookName: cook.name,
       emoji: cook.emoji,
-      cookHours: h,
+      hourlyRate: price / h, // estimated average
+      hoursBooked: h,
+      totalCost: price,
+      startTime: Date.now(),
+      status: "active" as const
     });
-    toast.success(`${cook.name} booked for ${h} hour(s)`);
+
+    toast.success(`Contract started with ${cook.name} for ${h} hour(s)`);
+    navigate("/cook-management");
   };
 
   return (

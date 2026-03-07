@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingCart, Menu, X, Leaf } from "lucide-react";
+import { ShoppingCart, Menu, X, Leaf, Package, ClipboardList } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -53,6 +53,16 @@ export default function Navbar() {
                   {totalItems}
                 </Badge>
               )}
+            </Button>
+          </Link>
+          <Link to="/tracking">
+            <Button variant="ghost" size="icon">
+              <Package className="h-5 w-5" />
+            </Button>
+          </Link>
+          <Link to="/cook-management">
+            <Button variant="ghost" size="icon">
+              <ClipboardList className="h-5 w-5" />
             </Button>
           </Link>
           <Button
