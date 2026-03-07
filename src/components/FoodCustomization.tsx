@@ -24,14 +24,22 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
   const toggle = (opt: string) =>
     setSelected((prev) => (prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]));
 
+  const calculateTotalPrice = () => {
+    if (!item) return 0;
+    const healthCharge = selected.length * 1.0;
+    const customCharge = (allergyNotes.trim() || instructions.trim()) ? 2.0 : 0;
+    return item.price + healthCharge + customCharge;
+  };
+
   const handleAdd = () => {
     if (!item) return;
+
     addItem({
       id: item.id,
       cartId: `${item.id}-custom-${Date.now()}`,
       type: "food",
       name: item.name,
-      price: item.price,
+      price: calculateTotalPrice(),
       quantity: 1,
       emoji: item.emoji,
       customizations: {
@@ -40,6 +48,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
         instructions,
       },
     });
+
     setSelected([]);
     setAllergyNotes("");
     setInstructions("");
@@ -47,6 +56,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
   };
 
   if (!item) return null;
+  const finalPrice = calculateTotalPrice();
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -71,16 +81,20 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
                     checked={selected.includes(opt)}
                     onCheckedChange={() => toggle(opt)}
                   />
-                  {opt}
+                  <span className="flex-1">{opt}</span>
+                  <span className="text-muted-foreground text-xs">+$1.00</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div>
-            <Label htmlFor="allergy" className="text-sm font-semibold">
-              Allergy Notes & Medical Conditions
-            </Label>
+            <div className="flex justify-between items-center mb-1.5">
+              <Label htmlFor="allergy" className="text-sm font-semibold">
+                Allergy Notes & Medical Conditions
+              </Label>
+              <span className="text-muted-foreground text-xs">+$2.00 (Flat Prep Fee)</span>
+            </div>
             <Input
               id="allergy"
               placeholder="e.g., Peanut allergy, shellfish intolerance..."
@@ -107,7 +121,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleAdd}>Add to Cart</Button>
+          <Button onClick={handleAdd}>Add to Cart • ${finalPrice.toFixed(2)}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
