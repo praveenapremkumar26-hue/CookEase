@@ -22,6 +22,9 @@ export default function Payment() {
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [upiId, setUpiId] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
   const { items, placeOrder, totalPrice } = useCart();
 
@@ -51,6 +54,7 @@ export default function Payment() {
   const finalTotal = totalPrice + taxAmount;
 
   const isFormValid = () => {
+    if (!name || phone.length < 10 || !address) return false;
     if (method === "card") return cardNumber.length >= 15 && expiry.length >= 4 && cvv.length >= 3;
     if (method === "upi") return upiId.length > 3;
     return true; // COD
@@ -75,6 +79,26 @@ export default function Payment() {
           <div className="flex justify-between text-lg font-bold">
             <span>Total</span>
             <span className="text-primary">₹{finalTotal.toFixed(2)}</span>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Delivery Details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone Number (+91)</Label>
+            <Input id="phone" type="tel" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="address">Complete Delivery Address</Label>
+            <Input id="address" placeholder="123 Main St, Apt 4B, City, State" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
         </CardContent>
       </Card>

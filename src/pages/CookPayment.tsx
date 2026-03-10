@@ -28,6 +28,9 @@ export default function CookPayment() {
     const [expiry, setExpiry] = useState("");
     const [cvv, setCvv] = useState("");
     const [upiId, setUpiId] = useState("");
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
     const [tip, setTip] = useState(0);
     const [review, setReview] = useState("");
     const [isPaying, setIsPaying] = useState(false);
@@ -45,6 +48,7 @@ export default function CookPayment() {
     const finalTotal = basePay + tip;
 
     const isFormValid = () => {
+        if (!name || phone.length < 10 || !address) return false;
         if (method === "card") return cardNumber.length >= 15 && expiry.length >= 4 && cvv.length >= 3;
         if (method === "upi") return upiId.length > 3;
         return true; // cash
@@ -132,6 +136,27 @@ export default function CookPayment() {
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                     />
+                </CardContent>
+            </Card>
+
+            <Card className="mb-6">
+                <CardHeader>
+                    <CardTitle>Service Location Details</CardTitle>
+                    <CardDescription>Where should the cook arrive?</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="name">Full Name</Label>
+                        <Input id="name" placeholder="John Doe" value={name} onChange={(e) => setName(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="phone">Phone Number (+91)</Label>
+                        <Input id="phone" type="tel" placeholder="9876543210" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="address">Service Address</Label>
+                        <Input id="address" placeholder="123 Main St, Apt 4B, City" value={address} onChange={(e) => setAddress(e.target.value)} />
+                    </div>
                 </CardContent>
             </Card>
 
