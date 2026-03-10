@@ -52,7 +52,7 @@ export default function OrderTracking() {
                 </p>
               </div>
               <div className="text-right">
-                <span className="font-bold text-primary">${order.totalPrice.toFixed(2)}</span>
+                <span className="font-bold text-primary">₹{order.totalPrice.toFixed(2)}</span>
                 <p className="text-sm text-muted-foreground">{order.items.length} items</p>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function OrderTracking() {
                         <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
                       </div>
                       <div className="text-sm font-medium">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ₹{(item.price * item.quantity).toFixed(2)}
                       </div>
                     </div>
                   ))}

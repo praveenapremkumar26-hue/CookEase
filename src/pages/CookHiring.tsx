@@ -61,9 +61,9 @@ export default function CookHiring() {
             </div>
 
             <div className="mt-4 flex items-center gap-4 text-sm">
-              <span className="text-primary font-bold">${cook.hourlyRate}/hr</span>
+              <span className="text-primary font-bold">₹{cook.hourlyRate}/hr</span>
               <span className="text-muted-foreground">•</span>
-              <span className="text-primary font-bold">${cook.fullDayRate}/day</span>
+              <span className="text-primary font-bold">₹{cook.fullDayRate}/day</span>
             </div>
 
             <div className="mt-4 flex items-end gap-2">

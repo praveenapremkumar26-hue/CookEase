@@ -82,7 +82,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
                     onCheckedChange={() => toggle(opt)}
                   />
                   <span className="flex-1">{opt}</span>
-                  <span className="text-muted-foreground text-xs">+$1.00</span>
+                  <span className="text-muted-foreground text-xs">+₹1.00</span>
                 </label>
               ))}
             </div>
@@ -93,7 +93,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
               <Label htmlFor="allergy" className="text-sm font-semibold">
                 Allergy Notes & Medical Conditions
               </Label>
-              <span className="text-muted-foreground text-xs">+$2.00 (Flat Prep Fee)</span>
+              <span className="text-muted-foreground text-xs">+₹2.00 (Flat Prep Fee)</span>
             </div>
             <Input
               id="allergy"
@@ -121,7 +121,7 @@ export default function FoodCustomization({ item, open, onClose }: Props) {
 
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={handleAdd}>Add to Cart • ${finalPrice.toFixed(2)}</Button>
+          <Button onClick={handleAdd}>Add to Cart • ₹{finalPrice.toFixed(2)}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

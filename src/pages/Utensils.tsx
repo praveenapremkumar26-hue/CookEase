@@ -41,7 +41,7 @@ export default function Utensils() {
               <h3 className="font-semibold">{u.name}</h3>
               <p className="text-sm text-muted-foreground">{u.description}</p>
               <div className="flex items-center justify-between">
-                <span className="font-bold text-primary">${u.pricePerDay}/day</span>
+                <span className="font-bold text-primary">₹{u.pricePerDay}/day</span>
                 <span className="text-xs text-muted-foreground">{u.available} available</span>
               </div>
               <div className="flex items-end gap-2">

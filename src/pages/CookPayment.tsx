@@ -24,6 +24,10 @@ export default function CookPayment() {
     const contract = contracts?.find(c => c.id === contractId);
 
     const [method, setMethod] = useState("card");
+    const [cardNumber, setCardNumber] = useState("");
+    const [expiry, setExpiry] = useState("");
+    const [cvv, setCvv] = useState("");
+    const [upiId, setUpiId] = useState("");
     const [tip, setTip] = useState(0);
     const [review, setReview] = useState("");
     const [isPaying, setIsPaying] = useState(false);
@@ -40,6 +44,12 @@ export default function CookPayment() {
     const basePay = contract.totalCost;
     const finalTotal = basePay + tip;
 
+    const isFormValid = () => {
+        if (method === "card") return cardNumber.length >= 15 && expiry.length >= 4 && cvv.length >= 3;
+        if (method === "upi") return upiId.length > 3;
+        return true; // cash
+    };
+
     const handlePayment = async () => {
         setIsPaying(true);
         // Simulate payment processing
@@ -49,7 +59,7 @@ export default function CookPayment() {
         completeContract(contract.id, tip, review);
 
         toast.success(`Payment successful!`, {
-            description: `Paid $${finalTotal.toFixed(2)} to ${contract.cookName}.`,
+            description: `Paid ₹${finalTotal.toFixed(2)} to ${contract.cookName}.`,
         });
 
         navigate("/cook-management");
@@ -79,7 +89,7 @@ export default function CookPayment() {
                     <div className="space-y-3">
                         <div className="flex justify-between text-sm">
                             <span className="text-muted-foreground">Base Contract Pay</span>
-                            <span className="font-medium">${basePay.toFixed(2)}</span>
+                            <span className="font-medium">₹{basePay.toFixed(2)}</span>
                         </div>
 
                         <div className="pt-2">
@@ -87,7 +97,7 @@ export default function CookPayment() {
                                 Add a Tip (Optional)
                             </Label>
                             <div className="relative">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">₹</span>
                                 <Input
                                     id="tip"
                                     type="number"
@@ -104,7 +114,7 @@ export default function CookPayment() {
                         <Separator className="my-4" />
                         <div className="flex justify-between text-lg font-bold">
                             <span>Total Payment</span>
-                            <span className="text-primary">${finalTotal.toFixed(2)}</span>
+                            <span className="text-primary">₹{finalTotal.toFixed(2)}</span>
                         </div>
                     </div>
                 </CardContent>
@@ -140,13 +150,42 @@ export default function CookPayment() {
                             </div>
                         ))}
                     </RadioGroup>
+
+                    {method === "card" && (
+                        <div className="space-y-4 mb-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="cardNumber">Card Number</Label>
+                                <Input id="cardNumber" placeholder="0000 0000 0000 0000" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="expiry">Expiry Date</Label>
+                                    <Input id="expiry" placeholder="MM/YY" value={expiry} onChange={(e) => setExpiry(e.target.value)} />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="cvv">CVV</Label>
+                                    <Input id="cvv" placeholder="123" value={cvv} onChange={(e) => setCvv(e.target.value)} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {method === "upi" && (
+                        <div className="space-y-4 mb-6">
+                            <div className="space-y-2">
+                                <Label htmlFor="upiId">UPI ID / Number</Label>
+                                <Input id="upiId" placeholder="example@upi or 9876543210" value={upiId} onChange={(e) => setUpiId(e.target.value)} />
+                            </div>
+                        </div>
+                    )}
+
                     <Button
                         className="w-full"
                         size="lg"
                         onClick={handlePayment}
-                        disabled={isPaying}
+                        disabled={isPaying || !isFormValid()}
                     >
-                        {isPaying ? "Processing..." : `Finalize & Pay $${finalTotal.toFixed(2)}`}
+                        {isPaying ? "Processing..." : `Finalize & Pay ₹${finalTotal.toFixed(2)}`}
                     </Button>
                 </CardContent>
             </Card>

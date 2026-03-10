@@ -17,7 +17,7 @@ export default function Cart() {
     await new Promise((res) => setTimeout(res, 2000)); // Simulate payment delay
     setIsPaying(false);
     toast.success("Payment successful! Order placed.", {
-      description: `Total: $${totalPrice.toFixed(2)}. Replace with real payment confirmation.`,
+      description: `Total: ₹${totalPrice.toFixed(2)}. Replace with real payment confirmation.`,
     });
     clearCart();
   };
@@ -53,7 +53,7 @@ export default function Cart() {
                     {item.type === "food" ? "Food" : item.type === "utensil" ? "Rental" : "Cook Booking"}
                   </Badge>
                 </div>
-                <span className="font-bold text-primary">${(item.price * item.quantity).toFixed(2)}</span>
+                <span className="font-bold text-primary">₹{(item.price * item.quantity).toFixed(2)}</span>
               </div>
 
               {item.customizations && (
@@ -108,7 +108,7 @@ export default function Cart() {
       <div className="mt-8 rounded-xl border bg-card p-6 space-y-4">
         <div className="flex justify-between text-lg font-bold">
           <span>Total</span>
-          <span className="text-primary">${totalPrice.toFixed(2)}</span>
+          <span className="text-primary">₹{totalPrice.toFixed(2)}</span>
         </div>
         <Link to="/payment">
           <Button className="w-full gap-2" size="lg">

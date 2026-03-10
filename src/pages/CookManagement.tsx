@@ -117,7 +117,7 @@ export default function CookManagement() {
                                     <CardFooter className="bg-background/50 border-t p-4 flex justify-between items-center">
                                         <div>
                                             <p className="text-sm text-muted-foreground">Base Contract Total</p>
-                                            <p className="font-bold text-lg">${contract.totalCost.toFixed(2)}</p>
+                                            <p className="font-bold text-lg">₹{contract.totalCost.toFixed(2)}</p>
                                         </div>
                                         <Button onClick={() => handlePayCook(contract.id)}>
                                             Complete & Pay <CheckCircle className="ml-2 h-4 w-4" />
@@ -149,9 +149,9 @@ export default function CookManagement() {
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-bold">${((contract.totalCost || 0) + (contract.tipAmount || 0)).toFixed(2)}</p>
+                                        <p className="font-bold">₹{((contract.totalCost || 0) + (contract.tipAmount || 0)).toFixed(2)}</p>
                                         {contract.tipAmount && contract.tipAmount > 0 ? (
-                                            <p className="text-xs text-green-600">Includes ${contract.tipAmount.toFixed(2)} tip</p>
+                                            <p className="text-xs text-green-600">Includes ₹{contract.tipAmount.toFixed(2)} tip</p>
                                         ) : null}
                                     </div>
                                 </CardContent>
