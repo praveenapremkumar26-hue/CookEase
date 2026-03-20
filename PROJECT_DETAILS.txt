@@ -193,4 +193,55 @@ How it works:
 What it does: This is the physical starting line.
 How it works:
 - The Bridge: It finds the <div id="root"></div> in your index.html file.
-- Injection: It uses ReactDOM.createRoot().render() to "inject" the entire React application into that one empty HTML div. This is why the entire website can run in a single HTML page!
+---
+
+## 14. The Backend & Database: Minute Details
+
+### 📂 How the Database Starts (backend/database.js)
+When you start the server, the code in database.js runs immediately. 
+- db.serialize(): This ensures that the commands run in order.
+- CREATE TABLE IF NOT EXISTS: This is a guard. It says "If the computer already has a database, don't break it; just use the existing one."
+
+### 🗄️ Detailed Table Schema
+
+#### 1. The users Table (The Foundation)
+| Column | Type | Why? |
+| :--- | :--- | :--- |
+| id | Integer | A unique number for every person (1, 2, 3...). |
+| name | Text | The user's full name. |
+| email | Text | Used for login (must be unique). |
+| password_hash | Text | Crucial: We never store "123456". We use a library called bcrypt to turn it into a long, scrambled code for safety. |
+
+#### 2. The orders Table (The Food Record)
+| Column | Type | Why? |
+| :--- | :--- | :--- |
+| user_id | Integer | Links to the users table so we know who bought it. |
+| items_json | Text | Since an order can have many items, we use JSON.stringify() to turn the whole list into one long piece of text. |
+| total_price | Real | The final bill amount. |
+| status | Text | Tracking: "Pending", "Preparing", etc. |
+
+---
+
+## 15. The Logic: How Data is Stored (Registration Example)
+When a new user signs up (backend/routes/auth.js):
+
+1. Extraction: The server gets the name, email, and password from the user's browser.
+2. Encryption: 
+   ```javascript
+   const hashedPassword = await bcrypt.hash(password, 10);
+   ```
+   This takes the password and "scrambles" it 10 times.
+3. The Insert:
+   ```sql
+   INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)
+   ```
+   The ? are placeholders. They prevent "SQL Injection" (a type of hacking where people try to type code into the email box).
+4. The Response: After saving, the backend tells the frontend "Success!" and sends back a JWT Token (a digital key) so the user stays logged in.
+
+---
+
+## 16. Summary: The "Minute" Learning Path
+To truly master this project, look at these three things in order:
+1. Frontend: How useState and useCart change the numbers on the screen.
+2. The API: How fetch() sends that data as a JSON package to the backend.
+3. The Database: How the backend takes that JSON and writes a permanent record into database.sqlite.
