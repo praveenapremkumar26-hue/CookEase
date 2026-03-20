@@ -1,0 +1,196 @@
+# CookEase: Minute Code Details & Inner Workings
+
+This guide is for a beginner developer who wants to understand exactly how the code works behind the scenes. We skip the high-level talk and look at the "gears" of the application.
+
+---
+
+## 1. How Data Flows (React Context & Reducer)
+The most important part of the code is how it remembers what's in your cart. We use a pattern called Context + Reducer.
+
+### The "Brain" (src/context/CartContext.tsx)
+We use a cartReducer. Think of this as a "Switchboard" that takes an Action and returns a new State.
+- Action: "Hey, the user clicked 'Add to Cart'."
+- State: The list of all items currently in the cart.
+
+Code Logic Example:
+```tsx
+case "ADD_ITEM":
+  // This code checks if the item is already in the cart.
+  // If yes, it just increases the quantity. 
+  // If no, it adds the new item to the list.
+  return { ...state, items: [...state.items, action.payload] };
+```
+
+### The "Global Access" (useCart)
+Because we wrap our entire app in <CartProvider> (in App.tsx), any component—like the Navbar or the Menu—can simply call useCart() to get the current total price or add an item. This avoids "Prop Drilling" (passing data through 10 levels of components).
+
+---
+
+## 2. How the UI Stays Updated (useEffect)
+In CartContext.tsx, you'll see a function like this:
+```tsx
+useEffect(() => {
+  localStorage.setItem("freshbite-state", JSON.stringify(state));
+}, [state]);
+```
+How it works: Every time the state (your cart) changes, this code automatically runs and saves the data to your browser's "Local Storage". Even if you refresh the page, the app reads this storage on startup and restores your items.
+
+---
+
+## 3. How the Backend Talks to the Database
+Our backend (backend/server.js) uses Express to listen for messages from your browser.
+
+- When you click "Place Order", the frontend sends a JSON message (a structured text format) to the backend.
+- The backend uses the sqlite3 library to write this data into database.sqlite.
+
+The SQLite Command:
+```javascript
+db.run(`INSERT INTO orders (user_id, items_json, total_price, status) VALUES (?, ?, ?, ?)`, 
+  [userId, JSON.stringify(items), totalPrice, 'Pending']);
+```
+Note: We use JSON.stringify(items) to save a whole list of food into a single text column in the database!
+
+---
+
+## 4. How Filtering Works ("Messy" but simple)
+In src/pages/Menu.tsx, we manually filter the list of food every time you type in the search bar.
+
+```tsx
+const filtered = foodItems.filter((item) => {
+  // If the user picked a category (like "Desserts"), skip everything else.
+  if (category !== "All" && item.category !== category) return false;
+  
+  // If the user typed a search word, check if it's in the name.
+  if (search && !item.name.toLowerCase().includes(search.toLowerCase())) return false;
+  
+  return true;
+});
+```
+This is "beginner-friendly" because it doesn't use complex state. It simply recalculates the list every time the page re-renders.
+
+---
+
+## 5. Working with "shadcn/ui"
+You'll see imports like @/components/ui/button. 
+- These are Functional Components. 
+- They aren't magical; they are just pre-coded HTML and CSS that we can reuse. 
+- For example, <Button variant="outline"> is just a <button> with specific Tailwind classes applied for us.
+
+---
+
+## 6. The Start-up Workflow (Technical)
+1. main.tsx: The very first file that loads. It renders App.tsx.
+2. App.tsx: Sets up the "Environment" (Routes, Auth, Cart).
+3. NavbarSection: (Inside App.tsx) Watches the useCart() hook to show the red badge count.
+4. MenuPage: Loads the hardcoded list from menuData.ts and prepares the filtered list for display.
+---
+
+## 7. How Components Talk ("Props")
+In React, we use "Props" (short for properties) to pass data from a parent component down to a child component.
+
+### The FoodCard Example (src/components/FoodCard.tsx)
+The MenuPage is the parent. It has a list of 50 food items. It creates a FoodCard for each one and passes the data like this:
+```tsx
+<FoodCard item={food} onCustomize={setCustomizeItem} />
+```
+Behind the Scenes:
+1. item: This is a prop containing the name, price, and emoji. The FoodCard receives it and displays it.
+2. onCustomize: This is a function passed as a prop. When the user clicks the "Customize" button *inside* the card, the card calls this function. 
+3. The Result: The parent (MenuPage) receives the message and knows exactly which item to show in the customization modal. 
+
+Tip: This is called "Lifting State Up"—the child component triggers an action that the parent handles.
+
+---
+
+## 8. Dynamic Styling (Tailwind + Logic)
+Sometimes we want the UI to change based on a condition (like highlighting the active category). 
+
+Code Logic Example:
+```tsx
+className={`px-4 py-2 rounded-lg ${
+  location.pathname === '/' ? "bg-primary text-white" : "text-black"
+}`}
+```
+This is just a standard JavaScript Template Literal. If the current page is the Home page (/), it adds the "primary" background color. Otherwise, it stays black.
+
+---
+
+## 9. The "Single Source of Truth"
+Almost all the "content" of the website is stored in one place: src/data/menuData.ts. 
+- Instead of writing "Samosa" 10 times in different files, we write it once in the data file.
+- Every other component (Menu, Cart, Search) reads from this single source. 
+---
+
+## 10. TypeScript (The Safety Net)
+You'll see files ending in .tsx and .ts. The "T" stands for TypeScript.
+- Imagine it as a set of "labels" we put on our data. 
+- For example, if we say a FoodItem MUST have a price, and you forget to add a price to a new dish, TypeScript will underline the code in red before you even try to open the website.
+- It doesn't change how the website looks; it just helps developers not make silly mistakes.
+
+---
+
+## 11. Vite (The Translator)
+Vite is the tool that runs when you type npm run dev. 
+- Browsers (like Chrome or Safari) don't actually understand the code we write (JSX, TypeScript, imports). 
+- Vite takes all our files and "translates" them into standard JavaScript, HTML, and CSS that every browser can understand. 
+- It also watches your files while you work. When you save a change, Vite only updates that one tiny piece of the website, which makes development very fast!
+
+---
+
+## 12. Conclusion: How to "Learn" this Project
+1. Start with App.tsx: It's the map of the whole app.
+2. Follow a button click: Start at FoodCard.tsx -> follow the onCustomize call back to Menu.tsx -> see how the setCustomizeItem state changes.
+---
+
+## 13. File-by-File Technical Deep Dive
+
+### App.tsx (The Conductor)
+What it does: This is the entry point of the entire UI. It decides "what to show based on the URL".
+How it works:
+- Shared Layout: It contains the NavbarSection and FooterSection. Since they are outside the <Routes>, they stay on the screen while you navigate between pages.
+- Routing: It uses <Route path="/menu" element={<MenuPage />} />. When the URL changes to /menu, React instantly swaps the center part of the screen with the Menu code.
+- Providers: It wraps everything in <CartProvider> and <AuthProvider>. This ensures that even if you are on the "UTENSILS" page, the "CART" data is still accessible.
+
+### Cart.tsx (The Checkout Page)
+What it does: Displays your selected items, handles quantity changes, and places the final order.
+How it works:
+- Array Mapping: It takes the items array from useCart() and uses .map() to create a list of items.
+- Quantity Updates: When you click + or -, it calls updateQuantity(cartId, newCount). This sends a message back to the "Brain" (CartContext) to update the global memory.
+- Simulated Payment: 
+  ```tsx
+  const handlePayment = async () => {
+    setIsLoading(true);
+    await new Promise(res => setTimeout(res, 2000)); // This line mimics a 2-second credit card check.
+    clearCart(); // Once "paid", we wipe the cart clean.
+  };
+  ```
+
+### Menu.tsx (The Catalog)
+What it does: Shows all food, allows searching, and handles medical-based filtering.
+How it works:
+- Local State: It uses useState to track what the user is typing in the search bar and which category (like "Appetizers") is selected.
+- The Filter "Waterfall": Every time you type one letter, the code re-filters the 12 items from menuData.ts. It's very fast because 12 items is tiny for a modern computer.
+
+### Login.tsx (The Door)
+What it does: Takes user credentials and asks the backend if they are correct.
+How it works:
+- The POST Request: It uses the browser's built-in fetch function to send a "POST" message to http://localhost:5000/api/auth/login.
+- Token Storage: If the backend says "Yes", it receives a token (a long secret string). 
+- Auth Context: It then calls login(token, user), which saves this secret token so the app knows you are officially signed in.
+
+### CartContext.tsx (The Memory)
+What it does: This is NOT a page. It's a "Service" that runs in the background.
+How it works:
+- Reducer Pattern: It follows a strict rulebook. If an action is CLEAR_CART, it MUST return an empty list []. This keeps the "memory" of the app very predictable and bug-free.
+
+### FoodCustomization.tsx (The Modal)
+What it does: The pop-up window where you pick your health options (No Oil, Low Sugar).
+How it works:
+- Controlled Visibility: It uses an open prop. If open is false, the code returns nothing (null), so it's invisible. 
+- Local Form State: While the modal is open, it uses its own temporary useState to track which checkboxes you are clicking. It only sends this data to the "Global Cart" when you click "Confirm".
+
+### main.tsx (The Root)
+What it does: This is the physical starting line.
+How it works:
+- The Bridge: It finds the <div id="root"></div> in your index.html file.
+- Injection: It uses ReactDOM.createRoot().render() to "inject" the entire React application into that one empty HTML div. This is why the entire website can run in a single HTML page!

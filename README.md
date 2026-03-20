@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# 🍲 CookEase
 
-## Project info
+**CookEase** is a modern, health-first culinary platform that simplifies meal customization, equipment rental, and professional chef hiring. It is designed to bridge the gap between delicious food and specific dietary or medical requirements.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## 🌟 Key Features
 
-There are several ways of editing your application.
+### 🥗 Medical-Based Food Customization
+Order meals that aren't just tasty, but safe for your body. Our platform allows filtering and granular customization for conditions such as:
+- **Diabetic Friendly**: Low sugar and low glycemic options.
+- **Gluten-Free**: Safe preparations for celiac or gluten sensitivity.
+- **Vegan & Lactose-Free**: Dairy-free and plant-based alternatives.
+- **Health Tweaks**: Add specific instructions like `No Oil`, `Low Salt`, or `High Protein` during checkout.
 
-**Use Lovable**
+### 👨‍🍳 Hire a Professional Cook
+Host a party or a family dinner without the stress of cooking.
+- **Top Chefs**: Book renowned culinary experts like Chef Arjun Mehta or Chef Priya Sharma.
+- **Flexible Booking**: Hire by the hour or for a full day.
+- **Seamless Contracts**: Instant cost calculation and simplified booking management.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 🍽️ Utensil Rental
+Planning a big event? Rent catering-quality equipment:
+- Dinner plates, glasses, and cutlery sets.
+- Specialized items like Chafing Dishes and Beverage Dispensers.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🚀 Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
+### 1. Frontend Setup (React/Vite)
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start the dev server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 2. Backend Setup (Node/Express)
+```sh
+cd backend
+# Install backend dependencies
+npm install
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+# Run the server (auto-initializes SQLite database)
+node server.js
+```
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📂 Project Architecture
 
-## What technologies are used for this project?
+### Frontend (User Interface)
+- **Vite + React**: Fast UI development.
+- **Tailwind CSS**: Modern utility-first styling.
+- **TanStack Query**: Efficient data fetching and caching.
+- **Lucide Icons**: Intuitive iconography.
 
-This project is built with:
+### Backend (Data & Logic)
+- **Express**: Lightweight API server.
+- **SQLite**: Simple, local database storage (`database.sqlite`).
+- **Data Layers**: Centralized menu, cook, and utensil data in `src/data/menuData.ts`.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+---
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 📘 Learning Resources
+For a deeper dive into how "CookEase" works, check out our [Minute Details Guide](file:///home/anudeepth/.gemini/antigravity/brain/c013e114-93ae-4384-bda4-a183b63cd2be/PROJECT_DETAILS.md). This document explains the codebase and database schema specifically for beginners.

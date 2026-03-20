@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { UtensilsCrossed, ChefHat, Truck, ShieldCheck, Leaf, ArrowRight } from "lucide-react";
-import { motion } from "framer-motion";
 
 const features = [
   { icon: UtensilsCrossed, title: "Custom Meals", desc: "Personalized food for every dietary need — diabetic, vegan, gluten-free, and more." },
@@ -10,27 +9,13 @@ const features = [
   { icon: ShieldCheck, title: "Health First", desc: "Detailed allergy notes, medical conditions, and custom instructions." },
 ];
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
-};
-
 export default function Index() {
   return (
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden bg-secondary">
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        </div>
         <div className="container mx-auto px-4 py-24 md:py-36 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="max-w-2xl"
-          >
+          <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-6">
               <Leaf className="h-4 w-4" /> Fresh • Healthy • Customized
             </div>
@@ -54,7 +39,7 @@ export default function Index() {
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -65,22 +50,17 @@ export default function Index() {
           <p className="mt-3 text-muted-foreground">One platform for food, equipment, and culinary talent.</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((f, i) => (
-            <motion.div
+          {features.map((f) => (
+            <div
               key={f.title}
-              custom={i}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={fadeUp}
-              className="rounded-xl border bg-card p-6 text-center hover:shadow-md transition-shadow"
+              className="rounded-xl border bg-card p-6 text-center"
             >
               <div className="mx-auto w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <f.icon className="h-6 w-6 text-primary" />
               </div>
               <h3 className="font-semibold text-foreground mb-2">{f.title}</h3>
               <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </section>

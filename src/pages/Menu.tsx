@@ -1,11 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search } from "lucide-react";
 import { foodItems, categories, dietaryFilters, type FoodItem } from "@/data/menuData";
 import FoodCard from "@/components/FoodCard";
 import FoodCustomization from "@/components/FoodCustomization";
-import { cn } from "@/lib/utils";
 
 export default function Menu() {
   const [search, setSearch] = useState("");
@@ -13,17 +10,21 @@ export default function Menu() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [customizeItem, setCustomizeItem] = useState<FoodItem | null>(null);
 
-  const toggleFilter = (f: string) =>
-    setActiveFilters((prev) => (prev.includes(f) ? prev.filter((x) => x !== f) : [...prev, f]));
+  const toggleFilter = (f: string) => {
+    if (activeFilters.includes(f)) {
+      setActiveFilters(activeFilters.filter((x) => x !== f));
+    } else {
+      setActiveFilters([...activeFilters, f]);
+    }
+  };
 
-  const filtered = useMemo(() => {
-    return foodItems.filter((item) => {
-      if (category !== "All" && item.category !== category) return false;
-      if (search && !item.name.toLowerCase().includes(search.toLowerCase()) && !item.description.toLowerCase().includes(search.toLowerCase())) return false;
-      if (activeFilters.length > 0 && !activeFilters.some((f) => item.tags.includes(f))) return false;
-      return true;
-    });
-  }, [search, category, activeFilters]);
+  // Simple filtering (not memoized, more "beginner")
+  const filtered = foodItems.filter((item) => {
+    if (category !== "All" && item.category !== category) return false;
+    if (search && !item.name.toLowerCase().includes(search.toLowerCase()) && !item.description.toLowerCase().includes(search.toLowerCase())) return false;
+    if (activeFilters.length > 0 && !activeFilters.some((f) => item.tags.includes(f))) return false;
+    return true;
+  });
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -32,7 +33,7 @@ export default function Menu() {
 
       {/* Search */}
       <div className="relative max-w-md mb-6">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
         <Input
           placeholder="Search dishes..."
           value={search}
@@ -47,12 +48,11 @@ export default function Menu() {
           <button
             key={cat}
             onClick={() => setCategory(cat)}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-medium border transition-colors",
+            className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
               category === cat
                 ? "bg-primary text-primary-foreground border-primary"
                 : "bg-background text-foreground border-border hover:bg-accent"
-            )}
+            }`}
           >
             {cat}
           </button>
@@ -62,14 +62,17 @@ export default function Menu() {
       {/* Dietary filters */}
       <div className="flex flex-wrap gap-2 mb-8">
         {dietaryFilters.map((f) => (
-          <Badge
+          <span
             key={f}
-            variant={activeFilters.includes(f) ? "default" : "outline"}
-            className="cursor-pointer"
+            className={`cursor-pointer px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+              activeFilters.includes(f)
+                ? "bg-primary text-primary-foreground border-primary"
+                : "bg-background text-foreground border-border"
+            }`}
             onClick={() => toggleFilter(f)}
           >
             {f}
-          </Badge>
+          </span>
         ))}
       </div>
 
